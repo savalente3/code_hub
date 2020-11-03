@@ -37,11 +37,19 @@ footer{
   background-color: whitesmoke;
 }
 
-.form-group, .btn{
+.register_box_size>form-group, .register_box_size>btn{
   align-content: center;
   width: 300px;
 }
 
 .alert{
   border-radius: 0%;
+}
+
+.dropdown-menu{
+  height: 340px !important;
+}
+
+.form-check{
+  padding-bottom: 10px;
 }

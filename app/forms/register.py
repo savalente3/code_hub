@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, Regexp
+from wtforms.validators import DataRequired, Length, Email, EqualTo, Regexp, ValidationError
+from app.models.models import User
 
 email_reg = '(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)'
 password_reg = '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$'
@@ -12,3 +13,13 @@ class registration_Form(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired(), Regexp(password_reg), Length(min=8)])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password') ])
     submit = SubmitField('Create Account')
+
+    def username_validation(self, username):
+        user = User.query.filter_by(username=username.data).first()
+        if user:
+            raise validationError ("Username in use")
+
+    def email_validation(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user:
+            raise ValidationError ("Email in use. Log in instead.")
