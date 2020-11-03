@@ -1,10 +1,9 @@
-from flask import Flask, render_template, url_for, flash, redirect
+from flask import render_template, url_for, flash, redirect
 #same as app.models
 from .forms.logIn import Login_Form
 from .forms.register import registration_Form 
-
-from app import app
-
+from app import app, db, bcrypt
+from .models.models import User, Question, Answer
 
 @app.route('/')
 def index():
@@ -15,6 +14,12 @@ def register_route():
     form = registration_Form()
 
     if form.validate_on_submit():
+        password_hash = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        
+        user = User(name=form.name.data, username=form.username.data, email=form.email.data, password=password_hash)
+        db.session.add(user)
+        db.session.commit()
+
         #message confirming validation success after submiting
         flash(f'Your registration was successful, {form.name.data}', 'success')
         return redirect(url_for('index'))

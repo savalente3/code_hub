@@ -1,9 +1,12 @@
-from flask import Flask, render_template, url_for
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
 
 app = Flask(__name__)
 app.config.from_pyfile('../config.py')
-from app import routes
-
+ 
 db = SQLAlchemy(app)
-from .models.models import User, Question, Answer
+bcrypt = Bcrypt(app)
+
+
+from app import routes
