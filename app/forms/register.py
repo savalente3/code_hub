@@ -14,12 +14,12 @@ class registration_Form(FlaskForm):
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password') ])
     submit = SubmitField('Create Account')
 
-    def username_validation(self, username):
+    def validate_username (self, username):
         user = User.query.filter_by(username=username.data).first()
         if user:
-            raise ValidationError ("Username in use")
+            raise ValidationError ("Username in use. Please choose another one.")
 
-    def email_validation(self, email):
+    def validate_email (self, email):
         user = User.query.filter_by(email=email.data).first()
         if user:
             raise ValidationError ("Email in use. Log in instead.")

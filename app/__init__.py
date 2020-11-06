@@ -8,7 +8,6 @@ app.config.from_pyfile('../config.py')
  
 db = SQLAlchemy(app)
 
-
 bcrypt = Bcrypt(app)
 login_manager =  LoginManager(app)
 
