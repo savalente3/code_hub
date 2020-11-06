@@ -25,31 +25,50 @@ body {
   border-radius: 25px !important;
 }
 
-footer{
-  background-color: whitesmoke;
+footer, .feedArea{
+  background-color: #f8faf8;
 }
 
 .card{
   border-radius: 22px !important;
 }
 
-.feedArea{
-  background-color: whitesmoke;
-}
-
-.register_box_size>form-group, .register_box_size>btn{
+.register_box_size>form-group, 
+.register_box_size>btn, 
+.login_btn, 
+.reg_btn{
   align-content: center;
   width: 300px;
 }
 
-.alert{
+/* .alert{
   border-radius: 0%;
-}
+} */
 
 .dropdown-menu{
-  height: 340px !important;
+  min-height: 370px !important;
 }
 
-.form-check{
+.form-check, .login_btn{
   padding-bottom: 10px;
+}
+
+.login{
+  padding: 0%;
+  margin-bottom: 5px;
+  text-align: center;
+  border-radius: 5px !important;
+}
+
+.register_box_size>form-group, 
+.register_box_size>btn, 
+.login_btn, 
+.reg_btn{
+  align-content: center;
+  width: 300px;
+}
+
+.dropdown-divider{
+  margin: 10px;
+  margin-top: 25px !important;
 }

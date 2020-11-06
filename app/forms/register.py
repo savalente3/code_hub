@@ -17,7 +17,7 @@ class registration_Form(FlaskForm):
     def username_validation(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user:
-            raise validationError ("Username in use")
+            raise ValidationError ("Username in use")
 
     def email_validation(self, email):
         user = User.query.filter_by(email=email.data).first()

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+<div class="container register">
+    
+    <div class="card bg-light">
+    <article class="card-body mx-auto">
+        <h4 class="card-title mt-3 text-center">Log In</h4> <br>
+
+        <form class="register_box_size" method="POST" action="">
+            <!-- The form.hidden_tag() template argument generates a hidden field that 
+            includes a token that is used to protect the form against CSRF attacks. -->
+            {{ form.hidden_tag() }}
+
+            <div class="form-group input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
+                </div>
+
+                {{ form.email(class="form-control", placeholder="Email") }}
+                            
+            </div> <!-- form-group// -->
+        
+            <div class="form-group input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                </div>
+
+                {{ form.password(class="form-control", placeholder="Password") }}
+                  
+            </div> <!-- form-group// -->
+        
+
+            <div class="form-check">
+                {{ form.remember(class="form-check-input") }}
+                Remember Me
+            </div>
+            {{ form.submit(class="btn login_btn btn-primary") }}
+        </form>
+
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="/register">Create Account</a>
+        <a class="dropdown-item">Forgot password?</a>
+
+        </form>
+    </article>
+    </div> 
+    
+    </div> 
+
+    
+{% endblock %}
