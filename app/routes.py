@@ -25,8 +25,9 @@ def register_route():
     if form.validate_on_submit():
 
         password_hash = bcrypt.generate_password_hash(form.password.data, salt).decode('utf-8')
-
         user = User(name=form.name.data, username=form.username.data, email=form.email.data, phone=form.phone.data, password=password_hash)
+        
+        #creates new user and adds it to db
         db.session.add(user)
         db.session.commit()
 
@@ -37,6 +38,7 @@ def register_route():
 
     return render_template('register.html', title='Register', form=form)
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def logIn():
     form = Login_Form()
@@ -46,6 +48,7 @@ def logIn():
 
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
+        
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             flash(f'You are now loged in, {user.username}', 'success')
@@ -65,4 +68,19 @@ def logOut():
 @app.route('/account', methods=['GET', 'POST'])
 def account():
     form = account_Form()
+
+    if form.validate_on_submit():
+
+        #updates de current user details
+        current_user.username = form.username.data        
+        current_user.name = form.name.data
+        current_user.email = form.email.data
+        current_user.phone = form.phone.data
+
+        #updates db
+        db.session.commit()
+
+        return redirect(url_for('account'))
+
+
     return render_template('account.html', title='Your Account', form=form)

@@ -43,12 +43,11 @@
                     {% endif %}
                 </div> <!-- form-group// -->
         
-                <div class="form-group input-group">
+                <div class="form-group input-group phone_input">
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                     </div>
-                    <p class="help-block">eg. +44 7222 555 555 </p>
-                    
+
                     {% if form.username.errors %}
                         {{ form.username(class="form-control is-invalid", placeholder="Username") }}
                         <div class="invalid-feedback">
@@ -58,8 +57,10 @@
                         </div>
                     {% else %}
                         {{ form.username(class="form-control", placeholder="Username") }}
-                    {% endif %}            
+                    {% endif %}
                 </div> 
+                <label class="help-block">eg. +44 7222 555 555 </label>
+
 
                 <div class="form-group input-group">
                     <div class="input-group-prepend">

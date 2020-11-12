@@ -109,5 +109,14 @@ footer, .feedArea{
 .fieldset-title,
 .help-block{
   margin-left: 20px !important;
+}
 
+.phone_input{
+  margin-bottom: 0em;
+  padding-bottom: 0em;
+}
+
+.help-block{
+  color: rgb(87, 85, 85);
+  padding-left: 5px;
 }
