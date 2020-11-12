@@ -1,18 +1,13 @@
 body {
   margin: 0;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color: #444;
+  color: rgb(36, 35, 35);
   background: no-repeat center center fixed linear-gradient(to top right, rgba(2,0,36,1) 0%, rgba(138,37,177,1) 63%, rgba(47,101,148,1) 99%);
   background-repeat: no-repeat;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-}
-
-.dropdown-menu {
-  width: 300px !important;
-  height: 315px !important;
 }
 
 .register {
@@ -25,23 +20,94 @@ body {
   border-radius: 25px !important;
 }
 
-footer{
-  background-color: whitesmoke;
+footer, .feedArea{
+  background-color: #f8faf8;
 }
 
 .card{
   border-radius: 22px !important;
 }
 
-.feedArea{
-  background-color: whitesmoke;
-}
-
-.form-group, .btn{
+.register_box_size>form-group, 
+.register_box_size>btn, 
+.login_btn, 
+.reg_btn{
   align-content: center;
   width: 300px;
 }
 
+
+.form-check, .login_btn, .update_btn{
+  padding-bottom: 10px;
+}
+
+.login{
+  padding: 0%;
+  margin-bottom: 5px;
+  text-align: center;
+  border-radius: 5px !important;
+}
+
+.register_box_size>form-group, 
+.register_box_size>btn, 
+.login_btn, 
+.reg_btn{
+  align-content: center;
+  width: 300px;
+}
+
+.dropdown-divider, .divider{
+  margin: 10px;
+  margin-top: 15px !important;
+}
+
 .alert{
-  border-radius: 0%;
+  margin-top: 40px;
+}
+
+.dropdown-menu{
+  width: 220px !important;
+}
+
+
+.menu_header, .menu_email{
+  margin: 0%;
+  margin-left: 1.5rem !important;
+  padding: 0px !important;
+}
+
+.menu_email{
+  font-size: 14px;
+}
+
+.info {
+  padding-left: 40px;
+  margin-right: 20px;
+}
+
+#account_dividir{
+  margin-top: 30px !important;
+  padding-top: 25px;
+}
+
+#account_titlle{
+  padding-top: 40px;
+  padding-left: 15px;
+  margin-bottom: 0.2em;
+}
+
+.col-container {
+  height: 67rem !important;
+}
+
+.update_btn{
+  margin: 40px 0px !important;
+  margin-left: 0em !important;
+}
+
+.col-md
+.fieldset-title,
+.help-block{
+  margin-left: 20px !important;
+
 }

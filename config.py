@@ -10,5 +10,5 @@
 STATIC_FOLDER = 'static'
 TEMPLATES_FOLDER = 'templates'
 SECRET_KEY = '44f243fc1815933976c3d57cb97eb2dd'
-SQLALCHEMY_DATABASE_URI = 'sqlite:///../database.db'
+SQLALCHEMY_DATABASE_URI = 'sqlite:///database.db'
 

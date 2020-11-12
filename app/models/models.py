@@ -1,21 +1,36 @@
-from app import db
+from app import db, login_manager
 from datetime import datetime
+from flask_login import UserMixin
 
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     user_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True, nullable=False)
+    name = db.Column(db.String(80), unique=False, nullable=False)
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
+    phone = db.Column(db.String(120), unique=True, nullable=False)
+
     
     #backref='author' adds column to post model 
     question = db.relationship('Question', backref='author', lazy=True)
     answer = db.relationship('Answer', backref='author', lazy=True)
 
+    def __init__(self, name, username, email, password, phone):
+        self.name = name
+        self.username = username
+        self.email = email
+        self.password = password
+        self.phone = phone
 
     def __repr__(self):
         return f"User('{self.name}', '{self.username}', '{self.email}', '{self.password}')"
+
+    def get_id(self):
+           return (self.user_id)
 
 
 class Question(db.Model):
@@ -46,3 +61,5 @@ class Answer(db.Model):
     def __repr__(self):
         return f"Question ('{self.date}','{self.content}')"
 
+db.create_all()
+db.session.commit()
