@@ -9,6 +9,9 @@ app.config.from_pyfile('../config.py')
 db = SQLAlchemy(app)
 
 bcrypt = Bcrypt(app)
-login_manager =  LoginManager(app)
+login_manager = LoginManager(app)
+login_manager.session_protection = "strong"
+
 
 from app import routes
+ 

@@ -35,31 +35,40 @@
 
 
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/register">Create Account</a>
-                    </li>
-                    
 
-                    <!-- ------------- LOGIN FORM ------------- -->
-                    <li class="nav-item dropdown active">
+                    {% if current_user.is_authenticated %}
+
+                        <!-- ------------- HAMBURGUER MENU ------------- -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link " href="#" id="navbarDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="/static/images/menu.svg" width="23" height="23" class="d-inline-block align-top" alt="" loading="lazy">
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="menu_header nav-link">{{current_user.username}}'s Account</a>
+                                <a class="menu_email nav-link">{{current_user.email}}</a>
+                                <div class="dropdown-divider divider"></div>
+                                <a class="dropdown-item" href="/account">Account</a>
+                                <a class="dropdown-item" href="#">Your Questions</a>
+                                <a class="dropdown-item" href="#">Your Answers</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="/logout">Log Out</a>
+                            </div>
+                        </li>
+
+                    {% else %}
+                        <!-- ------------- REGISTER FORM ------------- -->
                         <li class="nav-item active">
-                            <a class="nav-link" href="/login">Log In</a>
+                            <a class="nav-link" href="/register">Create Account</a>
                         </li>
                     
-                
-                    <!-- ------------- HAMBURGUER MENU ------------- -->
-                    <li class="nav-item dropdown d-none">
-                        <a class="nav-link " href="#" id="navbarDropdown" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src="/static/images/menu.svg" width="23" height="23" class="d-inline-block align-top" alt="" loading="lazy">
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </li>
+
+                        <!-- ------------- LOGIN FORM ------------- -->
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/login">Log In</a>
+                        </li>    
+                    {% endif %}
+
                 </ul>
             
             </div>
@@ -91,11 +100,16 @@
         integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous">
     </script>
 
-    <!-- <script>
-        $('#myAlert').on('closed.bs.alert', function () {
-  // do something…
-        })
-    </script> -->
+    <script>
+        $('.alert-success').click (function (e) {
+            e.preventDefault(); 
+
+            setTimeout(function () {
+                window.location.href = "/login"; 
+            }, 1000); 
+
+        });
+    </script>
 
 </body>
 
