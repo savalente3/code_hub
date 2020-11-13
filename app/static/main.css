@@ -61,8 +61,8 @@ footer, .feedArea{
   margin-top: 15px !important;
 }
 
-.alert{
-  margin-top: 40px;
+.success{
+  margin-top: 40px !important;
 }
 
 .dropdown-menu{
@@ -83,29 +83,34 @@ footer, .feedArea{
 .info {
   padding-left: 40px;
   margin-right: 20px;
+  width: 250px;
 }
 
 #account_dividir{
-  margin-top: 30px !important;
+  margin-top: 40px !important;
   padding-top: 25px;
 }
 
+
 #account_titlle{
-  padding-top: 40px;
+  padding-top: 20px;
   padding-left: 15px;
   margin-bottom: 0.2em;
 }
 
 .col-container {
-  height: 67rem !important;
+  height: 66rem !important;
 }
 
-.update_btn{
-  margin: 40px 0px !important;
-  margin-left: 0em !important;
+.update_btn, .btn{
+  margin: 50px 0px !important;
+  margin-left: 46px !important;
+  padding-left: 16px;
+  margin-left: 20px !important;
 }
 
-.col-md
+
+
 .fieldset-title,
 .help-block{
   margin-left: 20px !important;
@@ -119,4 +124,13 @@ footer, .feedArea{
 .help-block{
   color: rgb(87, 85, 85);
   padding-left: 5px;
+}
+
+.account_alert{
+  margin-top: 20px ;
+} 
+
+.input-group{
+  width: 300px !important;
+  padding-left: 3%;
 }
