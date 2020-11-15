@@ -1,9 +1,9 @@
-from flask import Flask, render_template, url_for, flash, redirect
+from flask import Flask, render_template, url_for, flash, redirect, request
 #same as app.models
 from .forms.logIn import Login_Form
-from .forms.register import registration_Form 
-from .forms.account import account_Form 
-from flask_login import login_user, current_user, logout_user
+from .forms.register import Registration_Form 
+from .forms.account import Account_Form 
+from flask_login import login_user, current_user, logout_user, login_required
 
 from app import app, db, bcrypt
 from .models.models import User, Question, Answer
@@ -16,7 +16,7 @@ def index():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register_route():
-    form = registration_Form()
+    form = Registration_Form()
     salt = 14
 
     if current_user.is_authenticated:
@@ -64,23 +64,29 @@ def logOut():
     return redirect(url_for('index'))
 
 
-
 @app.route('/account', methods=['GET', 'POST'])
+@login_required
 def account():
-    form = account_Form()
+    form = Account_Form()
+
+    user = User.query.filter_by(username=current_user.username).first()
 
     if form.validate_on_submit():
+        if form.name.data != '':
+            user.name = form.name.data
+        
+        if form.username.data != '':
+            user.username = form.username.data
+        
+        if form.email.data != '':
+            user.email = form.email.data
+        
+        if form.phone.data != '':
+            user.phone = form.phone.data
 
-        #updates de current user details
-        current_user.username = form.username.data        
-        current_user.name = form.name.data
-        current_user.email = form.email.data
-        current_user.phone = form.phone.data
-
-        #updates db
         db.session.commit()
+    
+        #message confirming validation success after submiting
+        flash(f'Your account has been updated, {form.name.data}', 'success')
 
-        return redirect(url_for('account'))
-
-
-    return render_template('account.html', title='Your Account', form=form)
+    return render_template('account.html', title='account', form=form)

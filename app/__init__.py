@@ -11,7 +11,8 @@ db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.session_protection = "strong"
-
+login_manager.login_view = 'logIn'
+login_manager.login_message_category = 'danger'
 
 from app import routes
  
