@@ -69,22 +69,24 @@ def logOut():
 def account():
     form = Account_Form()
 
+    user = User.query.filter_by(username=current_user.username).first()
+
     if form.validate_on_submit():
-        current_user.name = form.name.data
-        current_user.username = form.username.data        
-        current_user.email = form.email.data
-        current_user.phone = form.phone.data
+        if form.name.data != '':
+            user.name = form.name.data
+        
+        if form.username.data != '':
+            user.username = form.username.data
+        
+        if form.email.data != '':
+            user.email = form.email.data
+        
+        if form.phone.data != '':
+            user.phone = form.phone.data
 
         db.session.commit()
-
     
         #message confirming validation success after submiting
-        flash(f'Your registration was successful, {form.name.data}', 'success')
-
-    elif request.method == 'GET':
-        form.username.data == current_user.username
-        form.email.data == current_user.email
-        form.name.data == current_user.name
-        form.phone.data == current_user.phone
+        flash(f'Your account has been updated, {form.name.data}', 'success')
 
     return render_template('account.html', title='account', form=form)

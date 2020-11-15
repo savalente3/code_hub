@@ -39,6 +39,7 @@
 
                     <h3 class="fieldset-title">Personal Info</h3>
                     
+                    <label id="login_form">Name</label>
                     <div class="form-group input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"> <i class="fa fa-user"></i> </span>
@@ -52,10 +53,11 @@
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ form.name(class="form-control") }}
+                            {{ form.name(class="form-control", placeholder=current_user.name) }}
                         {% endif %}
                     </div> <!-- form-group// -->
                     
+                    <label id="login_form">Username</label>
                     <div class="form-group input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"> <i class="fa fa-user"></i> </span>
@@ -69,13 +71,14 @@
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ form.username(class="form-control") }}
+                            {{ form.username(class="form-control", placeholder=current_user.username) }}
                         {% endif %}
                     </div> 
 
                     <div id="account_dividir" class="dropdown-divider"></div>
                     <h3 class="fieldset-title">Account Info</h3>
 
+                    <label id="login_form">Email</label>
                     <div class="form-group input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
@@ -89,10 +92,11 @@
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ form.email(class="form-control") }}
+                            {{ form.email(class="form-control", placeholder=current_user.email) }}
                         {% endif %}             
                     </div> <!-- form-group// -->
 
+                    <label id="login_form">Phone</label>
                     <div class="form-group input-group phone_input">
                         <div class="input-group-prepend">
                             <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
@@ -106,7 +110,7 @@
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ form.phone(class="form-control") }}
+                            {{ form.phone(class="form-control", placeholder=current_user.phone) }}
                         {% endif %}             
                     </div> <!-- form-group// -->
                     <label class="help-block">eg. +44 7222 555 555 </label>

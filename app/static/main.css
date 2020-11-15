@@ -82,13 +82,14 @@ footer, .feedArea{
 
 .info {
   padding-left: 40px;
-  margin-right: 20px;
+  margin-right: 60px;
   width: 250px;
 }
 
 #account_dividir{
   margin-top: 40px !important;
   padding-top: 25px;
+  margin-left: 30px;
 }
 
 
@@ -133,4 +134,8 @@ footer, .feedArea{
 .input-group{
   width: 300px !important;
   padding-left: 3%;
+}
+
+#login_form {
+  padding-left: 22px !important;
 }
