@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, Regexp, ValidationError
 from app.models.models import User
 
@@ -15,6 +15,7 @@ class Registration_Form(FlaskForm):
     phone = StringField('Phone', validators=[DataRequired(), Regexp(phone_reg), Length(min=4, max=16)])
     password = PasswordField('Password', validators=[DataRequired(), Regexp(password_reg), Length(min=8)])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password') ])
+    email_confirmation = BooleanField()
     submit = SubmitField('Create Account')
 
     def validate_username (self, username):

@@ -13,21 +13,22 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
     phone = db.Column(db.String(120), unique=True, nullable=False)
+    email_confirmation = db.Column(db.String(1), nullable=False)
+    # register_date = db.Column(db.DateTime, nullable=False)
 
     
     #backref='author' adds column to post model 
     question = db.relationship('Question', backref='author', lazy=True)
     answer = db.relationship('Answer', backref='author', lazy=True)
 
-    def __init__(self, name, username, email, password, phone):
+    def __init__(self, name, username, email, password, phone, email_confirmation):
         self.name = name
         self.username = username
         self.email = email
         self.password = password
         self.phone = phone
-
-    def __repr__(self):
-        return f"User('{self.name}', '{self.username}', '{self.email}', '{self.password}')"
+        self.email_confirmation = email_confirmation
+        # self.registered_on = register_date
 
     def get_id(self):
            return (self.user_id)
@@ -44,9 +45,6 @@ class Question(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
     answer_id = db.relationship('Answer', backref='question', lazy=True)
 
-    def __repr__(self):
-        return f"Question ('{self.title}', '{self.date}','{self.content}')"
-
 class Answer(db.Model):
     #tables names are automatically set as the class name with lower case
     answer_id = db.Column(db.Integer, primary_key=True)
@@ -57,9 +55,6 @@ class Answer(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
     question_id = db.Column(db.Integer, db.ForeignKey('question.question_id'), nullable=False)
 
-
-    def __repr__(self):
-        return f"Question ('{self.date}','{self.content}')"
 
 db.create_all()
 db.session.commit()

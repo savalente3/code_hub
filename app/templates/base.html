@@ -48,7 +48,7 @@
                                 <a class="menu_header nav-link">{{current_user.username}}'s Account</a>
                                 <a class="menu_email nav-link">{{current_user.email}}</a>
                                 <div class="dropdown-divider divider"></div>
-                                <a class="dropdown-item" href="/account">Account</a>
+                                <a class="dropdown-item" href="/{{ current_user.username }}/account">Account</a>
                                 <a class="dropdown-item" href="#">Your Questions</a>
                                 <a class="dropdown-item" href="#">Your Answers</a>
                                 <div class="dropdown-divider"></div>

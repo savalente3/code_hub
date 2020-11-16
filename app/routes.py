@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, flash, redirect, request
+from flask import Flask, render_template, url_for, flash, redirect, request, Blueprint
 #same as app.models
 from .forms.logIn import Login_Form
 from .forms.register import Registration_Form 
@@ -7,7 +7,9 @@ from flask_login import login_user, current_user, logout_user, login_required
 
 from app import app, db, bcrypt
 from .models.models import User, Question, Answer
+from .email_confirmation import generate_confirmation_token, confirm_token
 
+app_blp = Blueprint("user_blp", __name__)
 
 @app.route('/')
 def index():
@@ -25,13 +27,20 @@ def register_route():
     if form.validate_on_submit():
 
         password_hash = bcrypt.generate_password_hash(form.password.data, salt).decode('utf-8')
-        user = User(name=form.name.data, username=form.username.data, email=form.email.data, phone=form.phone.data, password=password_hash)
+        user = User(name=form.name.data, 
+                    username=form.username.data, 
+                    email=form.email.data, 
+                    phone=form.phone.data, 
+                    password=password_hash,
+                    email_confirmation=False)
         
         #creates new user and adds it to db
         db.session.add(user)
         db.session.commit()
 
-    
+
+        # token = generate_confirmation_token(user.email)
+
         #message confirming validation success after submiting
         flash(f'Your registration was successful, {form.name.data}', 'success')
         return redirect(url_for('register_route'))
@@ -64,9 +73,9 @@ def logOut():
     return redirect(url_for('index'))
 
 
-@app.route('/account', methods=['GET', 'POST'])
+@app_blp.route('/<username>/account', methods=['GET', 'POST'])
 @login_required
-def account():
+def account(username):
     form = Account_Form()
 
     user = User.query.filter_by(username=current_user.username).first()
@@ -90,3 +99,23 @@ def account():
         flash(f'Your account has been updated, {form.name.data}', 'success')
 
     return render_template('account.html', title='account', form=form)
+
+
+
+# @app_blp.route('/confirm/<token>')
+# @login_required
+# def confirm_email(token):
+#     try:
+#         email = confirm_token(token)
+#     except:
+#         flash('The confirmation link is invalid or has expired.', 'danger')
+#     user = User.query.filter_by(email=email).first_or_404()
+#     if user.confirmed:
+#         flash('Account already confirmed. Please login.', 'success')
+#     else:
+#         user.confirmed = True
+#         user.confirmed_on = datetime.datetime.now()
+#         db.session.add(user)
+#         db.session.commit()
+#         flash('You have confirmed your account. Thanks!', 'success')
+#     return redirect(url_for('main.home'))
