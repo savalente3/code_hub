@@ -1,6 +1,7 @@
 from app import db, login_manager
 from datetime import datetime
 from flask_login import UserMixin
+from itsdangerous import TimedJSONWebSignatureSerializer as serializer
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -12,8 +13,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
-    phone = db.Column(db.String(120), unique=True, nullable=False)
-    email_confirmation = db.Column(db.String(1), nullable=False)
+    email_confirmation = db.Column(db.Boolean(1), unique=False, default=False)
     # register_date = db.Column(db.DateTime, nullable=False)
 
     
@@ -21,12 +21,11 @@ class User(db.Model, UserMixin):
     question = db.relationship('Question', backref='author', lazy=True)
     answer = db.relationship('Answer', backref='author', lazy=True)
 
-    def __init__(self, name, username, email, password, phone, email_confirmation):
+    def __init__(self, name, username, email, password, email_confirmation):
         self.name = name
         self.username = username
         self.email = email
         self.password = password
-        self.phone = phone
         self.email_confirmation = email_confirmation
         # self.registered_on = register_date
 

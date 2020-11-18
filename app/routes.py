@@ -1,15 +1,17 @@
 from flask import Flask, render_template, url_for, flash, redirect, request, Blueprint
+from flask_mail import Message
+from app import app, db, bcrypt, mail
+from itsdangerous.url_safe import URLSafeTimedSerializer
+from flask_login import login_user, current_user, logout_user, login_required
+
 #same as app.models
 from .forms.logIn import Login_Form
 from .forms.register import Registration_Form 
 from .forms.account import Account_Form 
-from flask_login import login_user, current_user, logout_user, login_required
 
-from app import app, db, bcrypt
 from .models.models import User, Question, Answer
-from .email_confirmation import generate_confirmation_token, confirm_token
 
-app_blp = Blueprint("user_blp", __name__)
+app_blp = Blueprint("user", __name__)
 
 @app.route('/')
 def index():
@@ -19,18 +21,17 @@ def index():
 @app.route('/register', methods=['GET', 'POST'])
 def register_route():
     form = Registration_Form()
-    salt = 14
+    s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
     if current_user.is_authenticated:
         return redirect(url_for('index'))
 
     if form.validate_on_submit():
 
-        password_hash = bcrypt.generate_password_hash(form.password.data, salt).decode('utf-8')
+        password_hash = bcrypt.generate_password_hash(form.password.data, 14).decode('utf-8')
         user = User(name=form.name.data, 
                     username=form.username.data, 
                     email=form.email.data, 
-                    phone=form.phone.data, 
                     password=password_hash,
                     email_confirmation=False)
         
@@ -38,12 +39,23 @@ def register_route():
         db.session.add(user)
         db.session.commit()
 
+        
+        token = s.dumps(user.email, salt=app.config['SECURITY_PASSWORD_SALT'])
+        confirm_url = url_for('confirm_email', token=token, _external=True)
+        activate_html = render_template('email.html', confirm_url=confirm_url)
+        
+        msg = Message("Please confirm your email", 
+                    sender="sa.valente3@gmail.com", 
+                    recipients=["jijayob934@biiba.com"],
+                    html=activate_html)        
+        
+        print(f"---------------TOKEN: {confirm_url}---------------")
+        
 
-        # token = generate_confirmation_token(user.email)
+        mail.send(msg)
 
         #message confirming validation success after submiting
-        flash(f'Your registration was successful, {form.name.data}', 'success')
-        return redirect(url_for('register_route'))
+        flash(f'Activate your account: an email has been sent to {form.email.data}', 'success')
 
     return render_template('register.html', title='Register', form=form)
 
@@ -89,9 +101,6 @@ def account(username):
         
         if form.email.data != '':
             user.email = form.email.data
-        
-        if form.phone.data != '':
-            user.phone = form.phone.data
 
         db.session.commit()
     
@@ -102,20 +111,28 @@ def account(username):
 
 
 
-# @app_blp.route('/confirm/<token>')
-# @login_required
-# def confirm_email(token):
-#     try:
-#         email = confirm_token(token)
-#     except:
-#         flash('The confirmation link is invalid or has expired.', 'danger')
-#     user = User.query.filter_by(email=email).first_or_404()
-#     if user.confirmed:
-#         flash('Account already confirmed. Please login.', 'success')
-#     else:
-#         user.confirmed = True
-#         user.confirmed_on = datetime.datetime.now()
-#         db.session.add(user)
-#         db.session.commit()
-#         flash('You have confirmed your account. Thanks!', 'success')
-#     return redirect(url_for('main.home'))
+@app.route('/confirm/<token>')
+@login_required
+def confirm_email(token):
+    s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+
+    try:
+        email = s.loads(token, salt=app.config['SECURITY_PASSWORD_SALT'],max_age=18000)
+    except:
+
+        flash('The confirmation link is invalid or has expired.', 'danger')
+
+    user = User.query.filter_by(email=email).first()
+
+    if user.email_confirmation:
+        flash('Account already confirmed. Please login.', 'info')
+    else: 
+        user.email_confirmation = True
+        db.session.add(user)
+        db.session.commit()
+        
+        login_user(user)
+        
+        flash('You have confirmed your account. Thanks!', 'success')
+
+    return render_template('activate.html', title='Account Activation')

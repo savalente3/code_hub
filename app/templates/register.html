@@ -76,25 +76,6 @@
                         {{ form.email(class="form-control", placeholder="Email") }}
                     {% endif %}             
                 </div> <!-- form-group// -->
-
-                <div class="form-group input-group phone_input">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
-                    </div>
-
-                    {% if form.phone.errors %}
-                        {{ form.phone(class="form-control is-invalid", placeholder="Phone number") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.phone.errors %}
-                                {{ error }}
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.phone(class="form-control", placeholder="Phone number") }}
-                    {% endif %}             
-                </div> <!-- form-group// -->
-                <label class="help-block">eg. +44 7222 555 555 </label>
-
         
                 <div class="form-group input-group">
                     <div class="input-group-prepend">

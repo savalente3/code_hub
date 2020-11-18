@@ -27,7 +27,6 @@
                     <li>{{ current_user.name }}</li>
                     <li>{{ current_user.username }}</li>
                     <li>{{ current_user.email }}</li>
-                    <li>{{ current_user.phone }}</li>
                 </ul>
             </div>
             
@@ -95,26 +94,6 @@
                             {{ form.email(class="form-control", placeholder=current_user.email) }}
                         {% endif %}             
                     </div> <!-- form-group// -->
-
-                    <label id="login_form">Phone</label>
-                    <div class="form-group input-group phone_input">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
-                        </div>
-
-                        {% if form.phone.errors %}
-                            {{ form.phone(class="form-control is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.phone.errors %}
-                                    {{ error }}
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ form.phone(class="form-control", placeholder=current_user.phone) }}
-                        {% endif %}             
-                    </div> <!-- form-group// -->
-                    <label class="help-block">eg. +44 7222 555 555 </label>
-
                     
                     <div class="form-group">
                         {{ form.submit(class="btn reg_btn btn-primary") }}

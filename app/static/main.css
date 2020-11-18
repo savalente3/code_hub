@@ -28,15 +28,6 @@ footer, .feedArea{
   border-radius: 22px !important;
 }
 
-.register_box_size>form-group, 
-.register_box_size>btn, 
-.login_btn, 
-.reg_btn{
-  align-content: center;
-  width: 300px;
-}
-
-
 .form-check, .login_btn, .update_btn{
   padding-bottom: 10px;
 }
@@ -117,10 +108,6 @@ footer, .feedArea{
   margin-left: 20px !important;
 }
 
-.phone_input{
-  margin-bottom: 0em;
-  padding-bottom: 0em;
-}
 
 .help-block{
   color: rgb(87, 85, 85);
