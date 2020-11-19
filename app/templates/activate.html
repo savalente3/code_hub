@@ -16,15 +16,49 @@
         {% endif %}
     {% endwith %}
 
-    <div class="container register">
     
+    <div class="container register">
         <div class="card bg-light">
-        <article class="card-body mx-auto">
-            <h4 class="card-title mt-3 text-center">Your account is active now.</h4> <br>
+        <article class="card-body mx-auto" style="max-width: 400px;">
+            <h4 class="card-title mt-3 text-center">Activate Account</h4> <br>
+
+            <form class="register_box_size" method="POST" action="">
+                <!-- The form.hidden_tag() template argument generates a hidden field that 
+                    includes a token that is used to protect the form against CSRF attacks. -->
+                {{ form.hidden_tag() }}
+        
+                <p>Please Activate your account</p>
+                
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                    </div>
+
+
+                    {% if form.password.errors %}
+                        {{ form.password(class="form-control is-invalid", placeholder="Password") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.password.errors %}
+                                {{ error }}
+                                Password must be at least 8 characters long, include a capital letter, a number and a symbol                    
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.password(class="form-control", placeholder="Password") }}
+                    {% endif %}   
+                </div> <!-- form-group// -->
+
+                <div class="form-group">
+                    {{ form.submit(class="btn reg_btn btn-primary") }}   
+                </div>
+
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/login">Already have an account? Log in</a>
+                <a class="dropdown-item">Forgot password?</a>
+            </form>
         </article>
         </div> 
-    
-    </div> 
+    </div>
 
     
 {% endblock %}

@@ -44,7 +44,8 @@ footer, .feedArea{
 .login_btn, 
 .reg_btn{
   align-content: center;
-  width: 300px;
+  width: 290px;
+  margin-left: 10px;
 }
 
 .dropdown-divider, .divider{
@@ -94,7 +95,7 @@ footer, .feedArea{
   height: 66rem !important;
 }
 
-.update_btn, .btn{
+.update_btn {
   margin: 50px 0px !important;
   margin-left: 46px !important;
   padding-left: 16px;

@@ -8,6 +8,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 from .forms.logIn import Login_Form
 from .forms.register import Registration_Form 
 from .forms.account import Account_Form 
+from .forms.activation import Activation_Form 
 
 from .models.models import User, Question, Answer
 
@@ -47,10 +48,7 @@ def register_route():
         msg = Message("Please confirm your email", 
                     sender="sa.valente3@gmail.com", 
                     recipients=["jijayob934@biiba.com"],
-                    html=activate_html)        
-        
-        print(f"---------------TOKEN: {confirm_url}---------------")
-        
+                    html=activate_html)                
 
         mail.send(msg)
 
@@ -111,28 +109,34 @@ def account(username):
 
 
 
-@app.route('/confirm/<token>')
-@login_required
+@app.route('/confirm/<token>', methods=['GET', 'POST'])
 def confirm_email(token):
     s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+    form = Activation_Form()
+
 
     try:
         email = s.loads(token, salt=app.config['SECURITY_PASSWORD_SALT'],max_age=18000)
     except:
-
         flash('The confirmation link is invalid or has expired.', 'danger')
 
     user = User.query.filter_by(email=email).first()
-
+    
     if user.email_confirmation:
         flash('Account already confirmed. Please login.', 'info')
-    else: 
-        user.email_confirmation = True
-        db.session.add(user)
-        db.session.commit()
-        
-        login_user(user)
-        
-        flash('You have confirmed your account. Thanks!', 'success')
+    
+    else:
+        if form.validate_on_submit():
+            if bcrypt.check_password_hash(user.password, form.password.data):
+                user.email_confirmation = True
 
-    return render_template('activate.html', title='Account Activation')
+                db.session.commit()
+
+                login_user(user)
+                flash(f'You have confirmed your account, {user.name} Thanks!', 'success')
+            else:
+                flash(f'Log in unsuccessful. Please try again', 'danger')
+
+
+
+    return render_template('activate.html', title='Account Activation', form=form, data=user)
