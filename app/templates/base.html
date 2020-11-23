@@ -35,22 +35,29 @@
 
 
                 <ul class="navbar-nav ml-auto">
+                    
+                    <form class="form-inline">
+                        <i class="fas fa-search ml-3" aria-hidden="true"></i>
+                        <input class="search_bar form-control form-control-md ml-3 w-75" type="text" placeholder="Search Question"
+                        aria-label="Search">
+                    </form>
 
                     {% if current_user.is_authenticated %}
-
+                        
                         <!-- ------------- HAMBURGUER MENU ------------- -->
                         <li class="nav-item dropdown">
                             <a class="nav-link " href="#" id="navbarDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img src="/static/images/menu.svg" width="23" height="23" class="d-inline-block align-top" alt="" loading="lazy">
                             </a>
+                            
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="menu_header nav-link">{{current_user.username}}'s Account</a>
                                 <a class="menu_email nav-link">{{current_user.email}}</a>
                                 <div class="dropdown-divider divider"></div>
                                 <a class="dropdown-item" href="/{{ current_user.username }}/account">Account</a>
-                                <a class="dropdown-item" href="#">Your Questions</a>
-                                <a class="dropdown-item" href="#">Your Answers</a>
+                                <a class="dropdown-item" href="/{{ current_user.username }}/questions">Your Questions</a>
+                                <a class="dropdown-item" href="/{{ current_user.username }}/answers">Your Answers</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="/logout">Log Out</a>
                             </div>
@@ -75,13 +82,8 @@
         </nav>
     </header>
 
+    {% block body %}{% endblock %}
 
-
-    <section class="container">
-        {% block body %}{% endblock %}
-    </section>
-
- 
     <footer class="page-footer font-small blue fixed-bottom">
         <div class="footer-copyright text-center py-3">© 2020 Copyright:
             <a> Coventry University</a><br>
@@ -101,15 +103,26 @@
     </script>
 
     <script>
-        $('.success').click (function (e) {
+        $('.register_unconfirmed').click (function (e) {
             e.preventDefault(); 
 
             setTimeout(function () {
-                window.location.href = "/"; 
+                window.location.href = "/{{ current_user.username }}/unconfirmed"; 
             }, 1000); 
 
         });
     </script>
+
+<script>
+    $('.alert-success').click (function (e) {
+        e.preventDefault(); 
+
+        setTimeout(function () {
+            window.location.href = "/"; 
+        }, 1000); 
+
+    });
+</script>
 
 </body>
 

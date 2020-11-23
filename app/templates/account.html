@@ -74,6 +74,7 @@
                         {% endif %}
                     </div> 
 
+                    <br>
                     <div id="account_dividir" class="dropdown-divider"></div>
                     <h3 class="fieldset-title">Account Info</h3>
 
@@ -94,8 +95,59 @@
                             {{ form.email(class="form-control", placeholder=current_user.email) }}
                         {% endif %}             
                     </div> <!-- form-group// -->
+                    <br>
+                    <label id="login_form">Current Password</label>
+                    <div class="form-group input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                        </div>
+    
+                        {{ form.current_password(class="form-control", placeholder="Password") }}
+  
+                    </div> <!-- form-group// -->
+
+
+                    <label id="login_form">New Password</label>
+                    <div class="form-group input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                        </div>
+    
+    
+                        {% if form.new_password.errors %}
+                            {{ form.new_password(class="form-control is-invalid", placeholder="Password") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.new_password.errors %}
+                                    {{ error }}
+                                    Password must be at least 8 characters long, include a capital letter, a number and a symbol                    
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.new_password(class="form-control", placeholder="Password") }}
+                        {% endif %}   
+                    </div> <!-- form-group// -->
+
+                    <label id="login_form">Confirm New Password</label>
+                    <div class="form-group input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                        </div>
+                        {% if form.confirm_password.errors %}
+                            {{ form.confirm_password(class="form-control is-invalid", placeholder="Confirm password") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.confirm_password.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.confirm_password(class="form-control", placeholder="Confirm password") }}
+                        {% endif %} 
+                    </div> 
                     
-                    <div class="form-group">
+                    <br>
+                    <br>
+                    
+                    <div class="form-group input-group">
                         {{ form.submit(class="btn reg_btn btn-primary") }}
                     </div>
 

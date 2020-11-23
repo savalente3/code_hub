@@ -1,28 +1,39 @@
-from flask import Flask, render_template, url_for, flash, redirect, request, Blueprint
+#import packages
+from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_mail import Message
-from app import app, db, bcrypt, mail
-from itsdangerous.url_safe import URLSafeTimedSerializer
+from app import app, db, bcrypt, mail, s
 from flask_login import login_user, current_user, logout_user, login_required
 
+#import forms
 #same as app.models
 from .forms.logIn import Login_Form
 from .forms.register import Registration_Form 
-from .forms.account import Account_Form 
-from .forms.activation import Activation_Form 
+from .forms.account import Account_Form, AccountUnconfirmed_Form
+from .forms.activation import Activation_Form
+from .forms.password import ForgotPassword_Form 
+from .forms.passwordReset import ResetPassword_Form
+from .forms.questions import Questions_Form
+from .token_email import send_email 
 
+#db
 from .models.models import User, Question, Answer
 
 app_blp = Blueprint("user", __name__)
 
-@app.route('/')
+@app.route('/',  methods=['GET', 'POST'])
 def index():
-    return render_template('home.html')
+    form = Questions_Form()
+
+    if form.validate_on_submit():
+        return redirect(url_for('index'))
+
+
+    return render_template('home.html', form=form)
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register_route():
     form = Registration_Form()
-    s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -40,20 +51,15 @@ def register_route():
         db.session.add(user)
         db.session.commit()
 
-        
-        token = s.dumps(user.email, salt=app.config['SECURITY_PASSWORD_SALT'])
-        confirm_url = url_for('confirm_email', token=token, _external=True)
-        activate_html = render_template('email.html', confirm_url=confirm_url)
-        
-        msg = Message("Please confirm your email", 
-                    sender="sa.valente3@gmail.com", 
-                    recipients=["jijayob934@biiba.com"],
-                    html=activate_html)                
+        send_email(email=user.email, 
+                            url='confirm_email', 
+                            subject='Please confirm your email',
+                            recipients=[user.email],
+                            html='email.html')
 
-        mail.send(msg)
-
-        #message confirming validation success after submiting
+    
         flash(f'Activate your account: an email has been sent to {form.email.data}', 'success')
+        login_user(user)
 
     return render_template('register.html', title='Register', form=form)
 
@@ -87,33 +93,55 @@ def logOut():
 @login_required
 def account(username):
     form = Account_Form()
-
     user = User.query.filter_by(username=current_user.username).first()
+    
+    if current_user.email_confirmation == False:
+        flash(f'Activate your account first, {user.name}', 'danger')
+        return redirect(url_for('.unconfirmed', username=user.username))
 
     if form.validate_on_submit():
         if form.name.data != '':
             user.name = form.name.data
+            flash(f'Your account has been updated, {user.name}', 'success')
         
         if form.username.data != '':
             user.username = form.username.data
+            flash(f'Your account has been updated, {user.name}', 'success')
         
         if form.email.data != '':
             user.email = form.email.data
+            user.email_confirmation = False
+            send_email(email=user.email, 
+                            url='confirm_email', 
+                            subject='Please confirm your email',
+                            recipients=[user.email],
+                            html='email.html')
+
+            flash(f'Reset Email: a reset link has been sent to your email {form.email.data}', 'success')
+
+
+        if form.current_password.data or form.new_password.data:
+            if form.current_password.data != '' and form.new_password.data != '':
+                
+                if user and bcrypt.check_password_hash(user.password, form.current_password.data):
+                    password_hash = bcrypt.generate_password_hash(form.new_password.data, 14).decode('utf-8')
+                    user.password = password_hash
+                    flash(f'Your account has been updated, {user.name}', 'success')
+                else:
+                    flash(f'Your current password is incorrect. Please try again', 'danger')
+  
+            else:
+                flash(f'Both current password and new password must be filled', 'danger')            
 
         db.session.commit()
-    
-        #message confirming validation success after submiting
-        flash(f'Your account has been updated, {form.name.data}', 'success')
-
+            
     return render_template('account.html', title='account', form=form)
 
 
 
 @app.route('/confirm/<token>', methods=['GET', 'POST'])
 def confirm_email(token):
-    s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
     form = Activation_Form()
-
 
     try:
         email = s.loads(token, salt=app.config['SECURITY_PASSWORD_SALT'],max_age=18000)
@@ -137,6 +165,97 @@ def confirm_email(token):
             else:
                 flash(f'Log in unsuccessful. Please try again', 'danger')
 
+    return render_template('activate.html', title='Account Activation', form=form)
 
 
-    return render_template('activate.html', title='Account Activation', form=form, data=user)
+
+@app.route('/password', methods=['GET', 'POST'])
+def password():
+    form = ResetPassword_Form()
+
+    if form.validate_on_submit():
+            user = User.query.filter_by(email=form.email.data).first()
+            if user:
+                send_email(email=form.email.data, 
+                            url='reset_password', 
+                            subject='Reset your password',
+                            recipients=[user.email],
+                            html='email_password.html')
+
+                flash(f'Reset Password: a reset link has been sent to your email {form.email.data}', 'success')
+            else: 
+                flash(f"This email doesn't belong to any account. Please register first", 'danger')
+
+    return render_template('reset_password.html', title='Reset Password', form=form)
+
+
+
+@app.route('/resetpassword/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    form = ForgotPassword_Form()
+
+    try:
+        email = s.loads(token, salt=app.config['SECURITY_PASSWORD_SALT'],max_age=1800)
+    except:
+        flash('The confirmation link is invalid or has expired.', 'danger')
+
+    user = User.query.filter_by(email=email).first()
+    
+    if form.validate_on_submit():
+        
+        password_hash = bcrypt.generate_password_hash(form.password.data, 14).decode('utf-8')
+        user.password = password_hash
+
+        db.session.commit()
+
+        login_user(user)
+        flash(f'Your password has been changed, {user.name} Thanks!', 'success')
+    
+
+    return render_template('password.html', title='Reset Password', form=form)
+
+
+
+@app_blp.route('/<username>/unconfirmed', methods=['GET', 'POST'])
+@login_required
+def unconfirmed(username):
+    form = AccountUnconfirmed_Form()
+
+    if current_user.email_confirmation:
+        return redirect('/')
+    
+    if form.validate_on_submit():
+        send_email(email=current_user.email, 
+                            url='confirm_email', 
+                            subject='Please confirm your email',
+                            recipients=[current_user.email],
+                            html='email.html')       
+        
+        flash(f'Activate your account: an email has been sent to {current_user.email}', 'success')
+
+    return render_template('unconfirmed.html', title='Unconfirmed Account', form=form)
+
+
+
+
+@app_blp.route('/<username>/questions', methods=['GET', 'POST'])
+@login_required
+def questions(username):
+
+
+    
+
+
+    return render_template('questions.html', title='Your Questions')
+
+
+
+@app_blp.route('/<username>/answers', methods=['GET', 'POST'])
+@login_required
+def answers(username):
+
+    
+    
+     
+        
+    return render_template('answers.html', title='Your answers')

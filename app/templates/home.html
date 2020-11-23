@@ -1,10 +1,34 @@
 {% extends 'base.html' %}
 
 {% block body %}
-    <article class="feedArea">
-    
-        <h1>Home</h1>
 
-    </article>
+    <div class="row bannner">
+                          
+            
+            <div class="jumbotron jumbotron-fluid col-">
+                <h1 class="display-4">For Developers, by Developers</h1>
+                <button type="button" class="btn btn-primary">Search Questions</button>
+            </div>
+            
+            <div class="col-">
+                <figure id='banner_img'>
+                    <img src="/static/images/banner.png" alt="">
+                </figure>
+            </div>
+
+
+    </div>
+
+    <div class="home_feedArea col-container">
+        <h1 class="display-4">Questions</h1>
+        {% if current_user.is_authenticated %}
+            <div class="container questions">
+                {{ form.title(class="form-control", placeholder="Title") }}
+                {{ form.content(class="form-control") }}
+
+            </div>
+        {% endif %}
+        
+    </div> 
 
 {% endblock %}

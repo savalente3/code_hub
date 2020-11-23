@@ -2,12 +2,38 @@ body {
   margin: 0;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: rgb(36, 35, 35);
-  background: no-repeat center center fixed linear-gradient(to top right, rgba(2,0,36,1) 0%, rgba(138,37,177,1) 63%, rgba(47,101,148,1) 99%);
+  background: no-repeat center center fixed linear-gradient(to top right, rgba(2,0,36,1) 0%, rgba(138,37,177,1) 63%, rgba(47,101,148,1) 99%) !important;
   background-repeat: no-repeat;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+}
+
+.home_feedArea{
+  background-color: #f8faf8;
+  padding: 5% 10%;
+}
+
+.jumbotron{
+  margin-left: 10%;
+  padding: 10%;
+  padding-right: 0% !important;
+  background-color: transparent !important;
+}
+
+.jumbotron>h1{
+  color: #f8faf8;
+  padding-top: 5%;
+  font-family: montserrat;
+  font-weight: bold;
+}
+
+.jumbotron>button{
+  padding: 2% 15%;
+  border-radius: 25px !important;
+  margin-top: 5%;
+  margin-left: 25%;
 }
 
 .register {
@@ -20,7 +46,7 @@ body {
   border-radius: 25px !important;
 }
 
-footer, .feedArea{
+footer, .feedArea, .reset_btn{
   background-color: #f8faf8;
 }
 
@@ -28,7 +54,7 @@ footer, .feedArea{
   border-radius: 22px !important;
 }
 
-.form-check, .login_btn, .update_btn{
+.form-check, .update_btn{
   padding-bottom: 10px;
 }
 
@@ -41,11 +67,9 @@ footer, .feedArea{
 
 .register_box_size>form-group, 
 .register_box_size>btn, 
-.login_btn, 
 .reg_btn{
   align-content: center;
   width: 290px;
-  margin-left: 10px;
 }
 
 .dropdown-divider, .divider{
@@ -53,8 +77,10 @@ footer, .feedArea{
   margin-top: 15px !important;
 }
 
-.success{
+.alert{
   margin-top: 40px !important;
+  width: 100%;
+  padding-left: 10%;
 }
 
 .dropdown-menu{
@@ -79,11 +105,17 @@ footer, .feedArea{
 }
 
 #account_dividir{
-  margin-top: 40px !important;
-  padding-top: 25px;
-  margin-left: 30px;
+  margin-top: 15px !important;
+  padding-top: 15px;
+  margin-left: 0px;
+  margin-bottom: 15px;
 }
 
+#banner_img>img{
+  width: 50em !important;
+  height: auto;
+  margin: 10%;
+}
 
 #account_titlle{
   padding-top: 20px;
@@ -92,7 +124,7 @@ footer, .feedArea{
 }
 
 .col-container {
-  height: 66rem !important;
+  height: 68rem !important;
 }
 
 .update_btn {
@@ -101,7 +133,6 @@ footer, .feedArea{
   padding-left: 16px;
   margin-left: 20px !important;
 }
-
 
 
 .fieldset-title,
@@ -115,9 +146,6 @@ footer, .feedArea{
   padding-left: 5px;
 }
 
-.account_alert{
-  margin-top: 20px ;
-} 
 
 .input-group{
   width: 300px !important;
@@ -126,4 +154,35 @@ footer, .feedArea{
 
 #login_form {
   padding-left: 22px !important;
+}
+
+.reset_btn, .row{
+  border: 0em;
+  margin: 0px !important;
+  padding: 0px !important;
+}
+
+.search_bar{
+  border-radius: 25px !important;
+  padding: 0px 30px;
+  margin: 0px 5px;
+}
+
+.questions{
+  background-color: rgb(236, 236, 236);
+  padding: 2.5%;
+  border-radius: 18px !important;
+
+}
+
+#content, #title{
+  margin-top: 20px;
+  border: 0px;
+  border-radius: 18px !important;
+  padding: 25px;
+}
+
+#content{
+  margin-top: 20px;
+  height: 200px;
 }
