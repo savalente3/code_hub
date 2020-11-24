@@ -1,32 +1,79 @@
 {% extends 'base.html' %}
 
 {% block body %}
-
-    <div class="row bannner">
-                          
-            
-            <div class="jumbotron jumbotron-fluid col-">
-                <h1 class="display-4">For Developers, by Developers</h1>
-                <button type="button" class="btn btn-primary">Search Questions</button>
-            </div>
-            
-            <div class="col-">
-                <figure id='banner_img'>
-                    <img src="/static/images/banner.png" alt="">
-                </figure>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <div class="jumbotron jumbotron-fluid">
+                    <h1 class="display-4">For Developers, by Developers</h1>
+                    <button type="button" class="btn btn-primary">Search Questions</button>
+                </div>
             </div>
 
-
+            <figure id='banner_img' class="col-sm">
+                <img src="/static/images/banner.png" alt="">
+            </figure>
+        </div>
     </div>
-
+                        
+    
+    
     <div class="home_feedArea col-container">
-        <h1 class="display-4">Questions</h1>
-        {% if current_user.is_authenticated %}
-            <div class="container questions">
-                {{ form.title(class="form-control", placeholder="Title") }}
-                {{ form.content(class="form-control") }}
+        <div class="container">
+            {% with messages = get_flashed_messages(with_categories=True)  %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{message}}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
 
-            </div>
+        <h1 class="display-4">Questions</h1>
+        
+        {% if current_user.is_authenticated %}
+
+            <form class="form-group shadow p-3 mb-5 bg-white rounded" method="POST" action="">
+                <!-- The form.hidden_tag() template argument generates a hidden field that 
+                includes a token that is used to protect the form against CSRF attacks. -->
+                {{ form.hidden_tag() }}
+                
+                <label for="exampleFormControlTextarea6">Write your questions here</label>
+                
+                {% if form.title.errors %}
+                    {{ form.title(class="form-control is-invalid", placeholder="Question") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.title.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.title(class="form-control", placeholder="Question") }}
+                {% endif %}
+
+
+                {% if form.content.errors %}
+                    {{ form.content(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.content.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.content(class="form-control") }}
+                {% endif %}
+                
+                <div class="form-group">
+                    {{ form.submit(class="btn question_btn btn-primary") }}
+                </div>
+
+            </form>
+
         {% endif %}
         
     </div> 

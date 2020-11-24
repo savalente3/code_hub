@@ -23,13 +23,17 @@ app_blp = Blueprint("user", __name__)
 @app.route('/',  methods=['GET', 'POST'])
 def index():
     form = Questions_Form()
-
+    
     if form.validate_on_submit():
-        return redirect(url_for('index'))
 
+        question = Question(title=form.title.data, content=form.content.data, author=current_user)
+            
+        db.session.add(question)
+        db.session.commit()
 
+        flash(f'Your Question has been posted, {current_user.username}', 'success')
+    
     return render_template('home.html', form=form)
-
 
 @app.route('/register', methods=['GET', 'POST'])
 def register_route():
@@ -58,7 +62,7 @@ def register_route():
                             html='email.html')
 
     
-        flash(f'Activate your account: an email has been sent to {form.email.data}', 'success')
+        flash(f'Activate your account: an email has been sent to {form.email.data}', 'info')
         login_user(user)
 
     return render_template('register.html', title='Register', form=form)
