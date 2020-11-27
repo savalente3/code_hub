@@ -2,11 +2,11 @@
 
 {% block body %}
     <div class="container">
-        <div class="row">
+        <div class="row home_banner">
             <div class="col-sm">
                 <div class="jumbotron jumbotron-fluid">
                     <h1 class="display-4">For Developers, by Developers</h1>
-                    <button type="button" class="btn btn-primary">Search Questions</button>
+                    <button type="button" href='#question_search' class="btn btn-primary">Search Questions</button>
                 </div>
             </div>
 
@@ -34,7 +34,7 @@
             {% endwith %}
         </div>
 
-        <h1 class="display-4">Questions</h1>
+        <h1 id='question_search' class="display-4">Questions</h1>
         
         {% if current_user.is_authenticated %}
 
@@ -71,10 +71,28 @@
                 <div class="form-group">
                     {{ form.submit(class="btn question_btn btn-primary") }}
                 </div>
-
             </form>
 
         {% endif %}
+
+        {% for question in  questions %}
+            <div class="form-group shadow p-3 mb-5 bg-white rounded">
+                
+                <h1 id='title'><a href="/questions/{{ question.question_id }}">{{ question.title}}</a></h1>
+                <p><b> {{ question.author.username }} </b>  on {{ question.date.strftime('%d %b %Y') }} at {{ question.date.strftime('%H:%M') }}</p>
+                <p>{{ question.content }}</p>
+                
+
+                {% if current_user.is_authenticated %}
+                    {% if question.author ==  current_user%}
+                        <button class="btn btn-primary question_btn">
+                            <a href="/questions/{{ question.question_id }}">Edit</a>
+                        </button>
+                    {% endif %}
+                {% endif %}
+
+            </div>
+        {% endfor %}
         
     </div> 
 

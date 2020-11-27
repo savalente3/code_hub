@@ -36,7 +36,7 @@ class User(db.Model, UserMixin):
 class Question(db.Model):
     #tables names are automatically set as the class name with lower case
     question_id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(), unique=False, nullable=False)
+    title = db.Column(db.String(), unique=True, nullable=False)
     date = db.Column(db.DateTime, default=datetime.utcnow)
     content = db.Column(db.Text, nullable=True)
 

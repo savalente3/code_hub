@@ -22,11 +22,15 @@
         <div class="row col-container">
                           
             <div class="col- info">
-                <ul class="meta list list-unstyled">
+                <ul id='title' class="meta list list-unstyled">
                     <h2 class="title"><span class="pro-label label label-warning">Profile</span></h2>
                     <li>{{ current_user.name }}</li>
                     <li>{{ current_user.username }}</li>
                     <li>{{ current_user.email }}</li>
+                    <br>
+                    <a href="/{{ current_user.username }}/questions">Your Questions</a>
+                    <a href="/{{ current_user.username }}/answers">Your Answers</a>
+
                 </ul>
             </div>
             

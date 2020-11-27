@@ -8,16 +8,23 @@ body {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  height: 95vh;
 }
 
 .home_feedArea{
   background-color: #f8faf8;
-  padding: 5% 10%;
+  padding: 1% 10%;
+  min-width: 50% !important;
 }
 
-.home_feedArea>h1{
-  margin: 3% 0%;
+.home_feedArea>#question_search{
+  margin: 3% 9% !important;
+}
 
+.home_feedArea>#profile{
+  text-align: center;
+  font-size: 80px;
+  margin-bottom: 2%;
 }
 
 .jumbotron{
@@ -40,13 +47,12 @@ body {
   border-radius: 20px !important;
   margin-top: 5%;
   align-content: center;
-
 }
 
 .question_btn{
   margin-top: 20px;
   border-radius: 20px !important;
-  width: 290px;
+  width: 200px;
   padding: 0.7% 0%;
   align-content: center;
   margin-left: 1% !important;
@@ -141,8 +147,8 @@ footer, .feedArea, .reset_btn{
   margin-bottom: 0.2em;
 }
 
-.col-container {
-  height: 68rem !important;
+.col-container, .feedArea {
+  min-height: 100%;
 }
 
 .update_btn {
@@ -186,21 +192,63 @@ footer, .feedArea, .reset_btn{
   margin: 0px 5px;
 }
 
-
-#content{
+#content, #content_answer{
   margin-top: 20px;
   height: 200px;
 }
 
-#content, #title, .rounded{
+#content, #title>a, 
+.rounded, 
+#title, 
+#content_answer{
   border-radius: 16px !important;
   margin-left: auto;
   margin-right: auto;
   width: 98%;
+  color: rgb(36, 35, 35);
+  text-decoration: none;
 }
 
 .rounded{
   width: 70%;
+  padding: 1.5% !important;
+}
+
+.answers{
+  border-radius: 16px !important;
+  margin-top: 5%;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 10% !important;
+}
+
+.home_banner{
+  margin-top: 10% !important;
+  margin-bottom: 8% !important;
+}
+
+#title>a:hover {
+  background-position: 0 100%;
+}
+
+#title>a {
+  position: relative;
+  display: inline-block;
+  font-weight: 800;
+  color: rgb(36, 35, 35);
+  overflow: hidden;
+  background: linear-gradient(to right, #007bff, #007bff 50%, rgb(36, 35, 35) 50%);
+
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 100%;
+  background-position: 100%;
+  transition: background-position 250ms ease;
+}
+
+.question_btn>a{
+  text-decoration: none;
+  color: #fff;
 }

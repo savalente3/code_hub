@@ -2,7 +2,7 @@
 
 
 {% block body %}
-    <div class="container feedArea">
+    <div class="container home_feedArea col-container">
         <br>
         <div class="container">
             {% with messages = get_flashed_messages(with_categories=True)  %}
@@ -17,10 +17,97 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-        </div>
-
-        <h1 id="account_titlle">{{ current_user.name }}'s Questions</h1>
-        <div id="account_dividir" class="dropdown-divider"></div>
+        </div>        
         
+        
+        <h1> {{ questions.title }} </h1>
+        <div id="account_dividir" class="dropdown-divider"></div>
+            
+        <p>{{ questions.content }}</p>
+        <p><b> {{ questions.author.username }} </b> on {{ questions.date.strftime('%d %b %Y') }} at {{ questions.date.strftime('%H:%M') }}</p>
+
+        {% if current_user.is_authenticated %}
+            {% if questions.author ==  current_user%}
+                <button class="btn btn-primary question_btn" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        Edit Question
+                </button>
+                    
+                <div class="collapse" id="collapseExample">
+                    <form class="answers" method="POST" action="">
+                        <!-- The form.hidden_tag() template argument generates a hidden field that 
+                        includes a token that is used to protect the form against CSRF attacks. -->
+                        {{ form.hidden_tag() }}  
+
+                        {% if form.title.errors %}
+                            {{ form.title(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.title.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.title(class="form-control") }}
+                        {% endif %}
+
+                        {% if form.content.errors %}
+                            {{ form.content(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.content.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.content(class="form-control") }}
+                        {% endif %}
+                            
+                        <div class="form-group">
+                            {{ form.submit(class="btn question_btn btn-primary") }}
+                        </div>
+     
+                    </form>
+                </div>
+            {% endif %}
+        {% endif %}
+
+        <div id="account_dividir" class="dropdown-divider"></div>
+
+        {% if answers_count <= 1  %}
+            <h3>{{ answers_count }} Answer</h3>
+        {% else %}
+            <h3>{{ answers_count }} Answers</h3>
+        {% endif %}
+
+        {% for answer in  answers %}
+            <div id="account_dividir" class="dropdown-divider"></div>
+            <p>{{ answer.content }}</p>
+            <p> <b> {{ answer.author.username }} </b> on {{ answer.date.strftime('%d %b %Y') }} at {{ answer.date.strftime('%H:%M') }}</p>
+        {% endfor %}
+
+        {% if current_user.is_authenticated %}
+            <form class="answers" method="POST" action="">
+            <!-- The form.hidden_tag() template argument generates a hidden field that 
+                includes a token that is used to protect the form against CSRF attacks. -->
+                {{ form2.hidden_tag() }}  
+
+                <div id="account_dividir" class="dropdown-divider"></div>
+                <label>Write your answers here</label>                        
+                
+                {% if form2.content_answer.errors %}
+                    {{ form2.content_answer(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form2.content_answer.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form2.content_answer(class="form-control") }}
+                {% endif %}
+                            
+                <div class="form-group">
+                    {{ form2.submit_answer(class="btn question_btn btn-primary") }}
+                </div>
+            </form>
+        {% endif %}
+
     </div> 
 {% endblock %}

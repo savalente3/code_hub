@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+    <div class="container home_feedArea col-container">
+        <br>
+        <div class="container">
+            {% with messages = get_flashed_messages(with_categories=True)  %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{message}}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>        
+        
+        
+        <h1 id="profile"> {{ current_user.username }}'s Answers </h1>
+        
+        {% if answers_count <= 1  %}
+            <p>{{ answers_count }} Answer</p>
+        {% else %}
+            <p>{{ answers_count }} Answers</p>
+        {% endif %}
+
+        <div id="account_dividir" class="dropdown-divider"></div>
+        
+        {% if answers_count == 0  %}
+            <p>You don't have any Answers yet</p>
+        {% else %}
+            {% for answer in  answers %}
+                <h3 id='title'><a href="/questions/{{ answer.question.question_id }}">{{ answer.question.title}}</a></h3>
+                <br>
+                <br>
+                <p>{{ answer.content }}</p>
+                <p>{{ answer.author.username }} on {{ answer.date.strftime('%d %b %Y') }} at {{ answer.date.strftime('%H:%M') }}</p>
+                <div id="account_dividir" class="dropdown-divider"></div>
+            {% endfor %}
+        {% endif %}
+
+    </div> 
+{% endblock %}

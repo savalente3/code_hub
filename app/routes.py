@@ -12,7 +12,7 @@ from .forms.account import Account_Form, AccountUnconfirmed_Form
 from .forms.activation import Activation_Form
 from .forms.password import ForgotPassword_Form 
 from .forms.passwordReset import ResetPassword_Form
-from .forms.questions import Questions_Form
+from .forms.questions import Questions_Form, Anwsers_Form
 from .token_email import send_email 
 
 #db
@@ -25,15 +25,15 @@ def index():
     form = Questions_Form()
     
     if form.validate_on_submit():
+        questions = Question(title=form.title.data, content=form.content.data, author=current_user)
 
-        question = Question(title=form.title.data, content=form.content.data, author=current_user)
-            
-        db.session.add(question)
+        db.session.add(questions)
         db.session.commit()
 
         flash(f'Your Question has been posted, {current_user.username}', 'success')
     
-    return render_template('home.html', form=form)
+    questions = Question.query.all() 
+    return render_template('home.html', form=form, questions=questions)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register_route():
@@ -242,24 +242,75 @@ def unconfirmed(username):
 
 
 
-@app_blp.route('/<username>/questions', methods=['GET', 'POST'])
-@login_required
-def questions(username):
+@app_blp.route('/questions/<question_id>/', methods=['GET', 'POST'])
+def questions(question_id):
 
+    #updates answers
+    form2 = Anwsers_Form()  
+    #updates question  
+    form = Questions_Form()
 
     
+    questions = Question.query.get_or_404(question_id)
+    
+    if request.method == 'GET':
+        form.content.data = questions.content
+        form.title.data = questions.title
+        
+    #edit a question
+    if form.validate_on_submit():
+        
+        if form.content.data != '' or form.title.data != '':
+            questions.content = form.content.data
+            questions.title = form.title.data
+            flash(f'Your question has been edited, {current_user.username}', 'info')
+        else:
+            db.session.expunge(questions)
+    
+        
+    #post an answer
+    if form2.validate_on_submit():
+        
+        if form2.content_answer.data != '':
+            answers = Answer(content=form2.content_answer.data, author=current_user, question=questions)
+            answers.content_answer = form2.content_answer.data
+            
+            form2.content_answer.data = None
+            form.content.data = questions.content
+            form.title.data = questions.title
+
+            flash(f'Your answer has been posted, {current_user.username}', 'info')     
+    
+    db.session.commit()
+
+    answers = Answer.query.filter_by(question_id=question_id).all()
+    answers_count = Answer.query.filter_by(question_id=question_id).count()
+    
+    return render_template('questions.html', 
+                            title='Your Questions', 
+                            questions=questions, 
+                            form=form,form2=form2, 
+                            answers=answers, 
+                            answers_count=answers_count)
 
 
-    return render_template('questions.html', title='Your Questions')
+
+@app_blp.route('/<username>/questions', methods=['GET', 'POST'])
+@login_required
+def user_questions(username):
+    questions = Question.query.filter_by(user_id=current_user.user_id).all()
+    questions_count = Question.query.filter_by(user_id=current_user.user_id).count()
+
+
+    return render_template('user_questions.html', title='Users Questions', questions=questions, questions_count=questions_count)
 
 
 
 @app_blp.route('/<username>/answers', methods=['GET', 'POST'])
 @login_required
-def answers(username):
+def user_answers(username):
 
-    
-    
-     
-        
-    return render_template('answers.html', title='Your answers')
+    answers = Answer.query.filter_by(user_id=current_user.user_id).all()
+    answers_count = Answer.query.filter_by(user_id=current_user.user_id).count()
+
+    return render_template('user_answers.html', title='Users Answers', answers=answers, answers_count=answers_count, questions=questions)
