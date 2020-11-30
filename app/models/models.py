@@ -42,7 +42,7 @@ class Question(db.Model):
 
     #user.user_id -> referencing the table name and column name. NOT CLASS
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
-    answer_id = db.relationship('Answer', backref='question', lazy=True)
+    answer_id = db.relationship('Answer', cascade='all,delete', backref='question', lazy=True)
 
 class Answer(db.Model):
     #tables names are automatically set as the class name with lower case
@@ -51,8 +51,8 @@ class Answer(db.Model):
     content = db.Column(db.Text, nullable=False)
 
     #user.user_id -> referencing the table name and column name. NOT CLASS
-    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
-    question_id = db.Column(db.Integer, db.ForeignKey('question.question_id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id', ondelete='CASCADE'), nullable=False)
+    question_id = db.Column(db.Integer, db.ForeignKey('question.question_id', ondelete='CASCADE'), nullable=False)
 
 
 db.create_all()

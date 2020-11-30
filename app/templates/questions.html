@@ -28,10 +28,11 @@
 
         {% if current_user.is_authenticated %}
             {% if questions.author ==  current_user%}
-                <button class="btn btn-primary question_btn" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                        Edit Question
+                <button class="btn btn-primary delete_btn" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        Edit
                 </button>
-                    
+                
+                <!-- Edit Modal -->
                 <div class="collapse" id="collapseExample">
                     <form class="answers" method="POST" action="">
                         <!-- The form.hidden_tag() template argument generates a hidden field that 
@@ -63,9 +64,36 @@
                         <div class="form-group">
                             {{ form.submit(class="btn question_btn btn-primary") }}
                         </div>
-     
                     </form>
                 </div>
+
+                <button class="btn btn-danger delete_btn" data-toggle="modal" data-target="#deleteQuestionModal">
+                    Delete
+                </button>
+
+                <!-- Delete Modal -->
+                <div class="modal fade" id="deleteQuestionModal" tabindex="-1" role="dialog" aria-labelledby="deleteQuestionModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content card bg-light">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="deleteQuestionModalLabel">Delete Question</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          Are you sure you want to delete this Question?
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary delete_btn" data-dismiss="modal">Cancel</button>
+                          <form action="/questions/{{ questions.question_id }}/delete_question" method="POST">
+                              <input class="btn btn-danger delete_btn" type="submit" value="Delete">
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+
             {% endif %}
         {% endif %}
 
@@ -81,6 +109,38 @@
             <div id="account_dividir" class="dropdown-divider"></div>
             <p>{{ answer.content }}</p>
             <p> <b> {{ answer.author.username }} </b> on {{ answer.date.strftime('%d %b %Y') }} at {{ answer.date.strftime('%H:%M') }}</p>
+            {% if current_user.is_authenticated %}
+                {% if answer.author ==  current_user%}
+
+                    <button class="btn btn-danger delete_btn" data-toggle="modal" data-target="#deleteAnswerModal">
+                        Delete
+                    </button>
+                
+                    <!-- Delete Modal -->
+                    <div class="modal fade" id="deleteAnswerModal" tabindex="-1" role="dialog" aria-labelledby="deleteAnswerModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                        <div class="modal-content card bg-light">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="deleteAnswerModalLabel">Delete Question</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                            Are you sure you want to delete this Question?
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary delete_btn" data-dismiss="modal">Cancel</button>
+                            <form action="/questions/{{ answer.answer_id }}/delete_answer" method="POST">
+                                <input class="btn btn-danger delete_btn" type="submit" value="Delete">
+                            </form>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+        
         {% endfor %}
 
         {% if current_user.is_authenticated %}

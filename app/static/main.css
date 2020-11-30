@@ -187,9 +187,11 @@ footer, .feedArea, .reset_btn{
 }
 
 .search_bar{
+  margin-top: 5%;
   border-radius: 25px !important;
-  padding: 0px 30px;
-  margin: 0px 5px;
+  align-content: center !important;
+  width: 60% !important;
+  margin-left: 0% !important;
 }
 
 #content, #content_answer{
@@ -251,4 +253,13 @@ footer, .feedArea, .reset_btn{
 .question_btn>a{
   text-decoration: none;
   color: #fff;
+}
+
+.delete_btn{
+  width: 110px !important;
+  border-radius: 20px !important;
+}
+
+.search_container{
+  align-content: center !important;
 }

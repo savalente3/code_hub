@@ -35,13 +35,6 @@
 
 
                 <ul class="navbar-nav ml-auto">
-                    
-                    <form class="form-inline">
-                        <i class="fas fa-search ml-3" aria-hidden="true"></i>
-                        <input class="search_bar form-control form-control-md ml-3 w-75" type="text" placeholder="Search Question"
-                        aria-label="Search">
-                    </form>
-
                     {% if current_user.is_authenticated %}
                         
                         <!-- ------------- HAMBURGUER MENU ------------- -->
@@ -75,7 +68,6 @@
                             <a class="nav-link" href="/login">Log In</a>
                         </li>    
                     {% endif %}
-
                 </ul>
             
             </div>

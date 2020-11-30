@@ -4,6 +4,8 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
 from itsdangerous.url_safe import URLSafeTimedSerializer
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
 
 
 app = Flask(__name__)
@@ -20,7 +22,15 @@ login_manager.login_message_category = 'danger'
 mail = Mail(app)
 s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
+
 from app import routes
 from .routes import app_blp
+from .models.models import User,Question, Answer
 
 app.register_blueprint(app_blp)
+
+admin = Admin(app)
+admin.add_view(ModelView(User, db.session))
+admin.add_view(ModelView(Question, db.session))
+admin.add_view(ModelView(Answer, db.session))
+

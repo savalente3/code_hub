@@ -18,7 +18,7 @@ from .token_email import send_email
 #db
 from .models.models import User, Question, Answer
 
-app_blp = Blueprint("user", __name__)
+app_blp = Blueprint("user_blp", __name__)
 
 @app.route('/',  methods=['GET', 'POST'])
 def index():
@@ -26,11 +26,14 @@ def index():
     
     if form.validate_on_submit():
         questions = Question(title=form.title.data, content=form.content.data, author=current_user)
+        
+        if form.content.data != '' or form.title.data != '':
+            db.session.add(questions)
+            db.session.commit()
 
-        db.session.add(questions)
-        db.session.commit()
-
-        flash(f'Your Question has been posted, {current_user.username}', 'success')
+        form.title.data = None
+        form.content.data = None
+        flash(f'Your Question has been posted, {current_user.username}', 'info')
     
     questions = Question.query.all() 
     return render_template('home.html', form=form, questions=questions)
@@ -215,7 +218,6 @@ def reset_password(token):
         login_user(user)
         flash(f'Your password has been changed, {user.name} Thanks!', 'success')
     
-
     return render_template('password.html', title='Reset Password', form=form)
 
 
@@ -245,21 +247,19 @@ def unconfirmed(username):
 @app_blp.route('/questions/<question_id>/', methods=['GET', 'POST'])
 def questions(question_id):
 
-    #updates answers
+    #posts answers
     form2 = Anwsers_Form()  
     #updates question  
     form = Questions_Form()
 
-    
     questions = Question.query.get_or_404(question_id)
     
     if request.method == 'GET':
         form.content.data = questions.content
         form.title.data = questions.title
-        
+
     #edit a question
-    if form.validate_on_submit():
-        
+    if form.validate_on_submit(): 
         if form.content.data != '' or form.title.data != '':
             questions.content = form.content.data
             questions.title = form.title.data
@@ -267,22 +267,19 @@ def questions(question_id):
         else:
             db.session.expunge(questions)
     
-        
     #post an answer
     if form2.validate_on_submit():
-        
         if form2.content_answer.data != '':
             answers = Answer(content=form2.content_answer.data, author=current_user, question=questions)
-            answers.content_answer = form2.content_answer.data
+            answers.content = form2.content_answer.data
             
             form2.content_answer.data = None
             form.content.data = questions.content
             form.title.data = questions.title
-
+            
             flash(f'Your answer has been posted, {current_user.username}', 'info')     
     
     db.session.commit()
-
     answers = Answer.query.filter_by(question_id=question_id).all()
     answers_count = Answer.query.filter_by(question_id=question_id).count()
     
@@ -301,7 +298,6 @@ def user_questions(username):
     questions = Question.query.filter_by(user_id=current_user.user_id).all()
     questions_count = Question.query.filter_by(user_id=current_user.user_id).count()
 
-
     return render_template('user_questions.html', title='Users Questions', questions=questions, questions_count=questions_count)
 
 
@@ -309,8 +305,32 @@ def user_questions(username):
 @app_blp.route('/<username>/answers', methods=['GET', 'POST'])
 @login_required
 def user_answers(username):
-
     answers = Answer.query.filter_by(user_id=current_user.user_id).all()
     answers_count = Answer.query.filter_by(user_id=current_user.user_id).count()
 
     return render_template('user_answers.html', title='Users Answers', answers=answers, answers_count=answers_count, questions=questions)
+
+
+
+@app_blp.route('/questions/<question_id>/delete_question', methods=['POST'])
+@login_required
+def delete(question_id):
+    question = Question.query.get_or_404(question_id)
+
+    db.session.delete(question)
+    db.session.commit()
+
+    flash(f'Your question has been deleted, {current_user.username}', 'danger')     
+    return redirect(url_for('index'))
+
+
+@app_blp.route('/questions/<answer_id>/delete_answer', methods=['POST'])
+@login_required
+def delete_answer(answer_id):
+    answers = Answer.query.get_or_404(answer_id)
+
+    db.session.delete(answers)
+    db.session.commit()
+
+    flash(f'Your question has been deleted, {current_user.username}', 'danger')     
+    return redirect(f'/questions/{answers.question_id}/')
