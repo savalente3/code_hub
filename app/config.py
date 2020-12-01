@@ -1,10 +1,12 @@
 import os
 
-# #GET SCRET_KEY
-# #python interpreter -> python on terminal
-# #import secrets
-# #>>> secrets.token_hex(16)
-# app.config['SECRET_KEY'] = '44f243fc1815933976c3d57cb97eb2dd'
+'''
+--------------GET SCRET_KEY--------------
+python interpreter -> python on terminal
+import secrets
+secrets.token_hex(16)
+'''
+
 
 """ 
 ----------------ENV VARS----------------
@@ -20,21 +22,22 @@ export MAIL_DEFAULT_SENDER='full_email'
 
 
 """Base config."""
-STATIC_FOLDER = 'static'
-TEMPLATES_FOLDER = 'templates'
-SECRET_KEY = os.environ.get('SECRET_KEY')
-SQLALCHEMY_DATABASE_URI = 'sqlite:///database.db'
-SECURITY_PASSWORD_SALT = os.environ.get('SECURITY_PASSWORD_SALT')
+class config():
+    STATIC_FOLDER = 'static'
+    TEMPLATES_FOLDER = 'templates'
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///database.db'
+    SECURITY_PASSWORD_SALT = os.environ.get('SECURITY_PASSWORD_SALT')
 
-# mail settings
-MAIL_SERVER = 'smtp.googlemail.com'
-MAIL_PORT = 465
-MAIL_USE_TLS = False
-MAIL_USE_SSL = True
+    # mail settings
+    MAIL_SERVER = 'smtp.googlemail.com'
+    MAIL_PORT = 465
+    MAIL_USE_TLS = False
+    MAIL_USE_SSL = True
 
-# gmail authentication
-MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-MAIL_DEFAULT_SENDER = os.environ.get('MAIL_DEFAULT_SENDER')
+    # gmail authentication
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    MAIL_DEFAULT_SENDER = os.environ.get('MAIL_DEFAULT_SENDER')
 
  

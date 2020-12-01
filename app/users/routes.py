@@ -1,4 +1,4 @@
-from flask import render_template, url_for, flash, redirect, request, Blueprint
+from flask import render_template, url_for, flash, redirect, request, Blueprint, current_app
 from flask_login import login_user, current_user, logout_user, login_required
 from app.users.token_email import send_email 
 
@@ -10,7 +10,7 @@ from app.users.forms.activation import Activation_Form
 from app.users.forms.logIn import Login_Form
 
 from app.models.models import User, Question, Answer
-from app import app, db, bcrypt, mail, s
+from app import db, bcrypt, mail
 
 user_blp = Blueprint("user_blp", __name__)
 
@@ -127,7 +127,7 @@ def confirm_email(token):
     form = Activation_Form()
 
     try:
-        email = s.loads(token, salt=app.config['SECURITY_PASSWORD_SALT'],max_age=18000)
+        email = current_app.s.loads(token, salt=current_app.config['SECURITY_PASSWORD_SALT'],max_age=18000)
     except:
         flash('The confirmation link is invalid or has expired.', 'danger')
 
@@ -178,7 +178,7 @@ def reset_password(token):
     form = ForgotPassword_Form()
 
     try:
-        email = s.loads(token, salt=app.config['SECURITY_PASSWORD_SALT'],max_age=1800)
+        email = current_app.s.loads(token, salt=current_app.config['SECURITY_PASSWORD_SALT'],max_age=1800)
     except:
         flash('The confirmation link is invalid or has expired.', 'danger')
 
