@@ -14,7 +14,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
     email_confirmation = db.Column(db.Boolean(1), unique=False, default=False)
-    # register_date = db.Column(db.DateTime, nullable=False)
+    admin = db.Column(db.Boolean(1), unique=False, default=False)
 
     
     #backref='author' adds column to post model 
