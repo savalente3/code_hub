@@ -1,7 +1,6 @@
 from app import db, login_manager
 from datetime import datetime
 from flask_login import UserMixin
-from itsdangerous import TimedJSONWebSignatureSerializer as serializer
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -55,5 +54,3 @@ class Answer(db.Model):
     question_id = db.Column(db.Integer, db.ForeignKey('question.question_id', ondelete='CASCADE'), nullable=False)
 
 
-db.create_all()
-db.session.commit()

@@ -1,5 +1,6 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint, current_app
 from flask_login import login_user, current_user, logout_user, login_required
+from itsdangerous.url_safe import URLSafeTimedSerializer
 from app.users.token_email import send_email 
 
 from app.users.forms.account import Account_Form, AccountUnconfirmed_Form
@@ -95,7 +96,7 @@ def account(username):
             user.email = form.email.data
             user.email_confirmation = False
             send_email(email=user.email, 
-                            url='confirm_email', 
+                            url='user_blp.confirm_email', 
                             subject='Please confirm your email',
                             recipients=[user.email],
                             html='email.html')
@@ -124,10 +125,11 @@ def account(username):
 
 @user_blp.route('/confirm/<token>', methods=['GET', 'POST'])
 def confirm_email(token):
+    s = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
     form = Activation_Form()
 
     try:
-        email = current_app.s.loads(token, salt=current_app.config['SECURITY_PASSWORD_SALT'],max_age=18000)
+        email = s.loads(token, salt=current_app.config['SECURITY_PASSWORD_SALT'],max_age=18000)
     except:
         flash('The confirmation link is invalid or has expired.', 'danger')
 
@@ -175,10 +177,11 @@ def password():
 
 @user_blp.route('/resetpassword/<token>', methods=['GET', 'POST'])
 def reset_password(token):
+    s = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
     form = ForgotPassword_Form()
 
     try:
-        email = current_app.s.loads(token, salt=current_app.config['SECURITY_PASSWORD_SALT'],max_age=1800)
+        email = s.loads(token, salt=current_app.config['SECURITY_PASSWORD_SALT'],max_age=1800)
     except:
         flash('The confirmation link is invalid or has expired.', 'danger')
 
@@ -225,6 +228,10 @@ def user_questions(username):
     questions = Question.query.filter_by(user_id=current_user.user_id).all()
     questions_count = Question.query.filter_by(user_id=current_user.user_id).count()
 
+    if current_user.email_confirmation == False:
+        flash(f'Activate your account first, {current_user.name}', 'danger')
+        return redirect(url_for('user_blp.unconfirmed', username=current_user.username))
+
     return render_template('auth/user_questions.html', title='Users Questions', questions=questions, questions_count=questions_count)
 
 
@@ -234,6 +241,10 @@ def user_questions(username):
 def user_answers(username):
     answers = Answer.query.filter_by(user_id=current_user.user_id).all()
     answers_count = Answer.query.filter_by(user_id=current_user.user_id).count()
+
+    if current_user.email_confirmation == False:
+        flash(f'Activate your account first, {current_user.name}', 'danger')
+        return redirect(url_for('user_blp.unconfirmed', username=current_user.username))
 
     return render_template('auth/user_answers.html', title='Users Answers', answers=answers, answers_count=answers_count)
 

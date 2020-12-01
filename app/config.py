@@ -22,7 +22,7 @@ export MAIL_DEFAULT_SENDER='full_email'
 
 
 """Base config."""
-class config():
+class Config():
     STATIC_FOLDER = 'static'
     TEMPLATES_FOLDER = 'templates'
     SECRET_KEY = os.environ.get('SECRET_KEY')
