@@ -23,13 +23,13 @@ def register_route():
         return redirect(url_for('home_blp.index'))
 
     if form.validate_on_submit():
-
         password_hash = bcrypt.generate_password_hash(form.password.data, 14).decode('utf-8')
         user = User(name=form.name.data, 
                     username=form.username.data, 
                     email=form.email.data, 
                     password=password_hash,
-                    email_confirmation=False)
+                    email_confirmation=False,
+                    admin=False)
         
         #creates new user and adds it to db
         db.session.add(user)

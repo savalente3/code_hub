@@ -3,12 +3,10 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
-from flask_admin import Admin
+from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from app.config import Config
 
-
- 
 db = SQLAlchemy()
 
 bcrypt = Bcrypt()
@@ -30,7 +28,7 @@ def Create_app(config_class=Config):
     app.register_blueprint(questions_blp)
     app.register_blueprint(user_blp)
     app.register_blueprint(home_blp)
-
+ 
     db.init_app(app)
     bcrypt.init_app(app)
     login_manager.init_app(app)
@@ -45,8 +43,9 @@ def Create_app(config_class=Config):
     
 
 from app.models.models import User, Question, Answer
+from app.admin import MyController, MyAdminController
 
-admin = Admin()
-admin.add_view(ModelView(User, db.session))
-admin.add_view(ModelView(Question, db.session))
-admin.add_view(ModelView(Answer, db.session))
+admin = Admin(index_view=MyAdminController(), template_mode='bootstrap4')
+admin.add_view(MyController(User, db.session))
+admin.add_view(MyController(Question, db.session))
+admin.add_view(MyController(Answer, db.session))

@@ -20,18 +20,18 @@ class User(db.Model, UserMixin):
     question = db.relationship('Question', backref='author', lazy=True)
     answer = db.relationship('Answer', backref='author', lazy=True)
 
-    def __init__(self, name, username, email, password, email_confirmation):
+    def __init__(self, name, username, email, password, email_confirmation, admin):
         self.name = name
         self.username = username
         self.email = email
         self.password = password
         self.email_confirmation = email_confirmation
-        # self.registered_on = register_date
+        self.admin = admin
+        
 
     def get_id(self):
            return (self.user_id)
-
-
+    
 class Question(db.Model):
     #tables names are automatically set as the class name with lower case
     question_id = db.Column(db.Integer, primary_key=True)
@@ -43,6 +43,7 @@ class Question(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
     answer_id = db.relationship('Answer', cascade='all,delete', backref='question', lazy=True)
 
+
 class Answer(db.Model):
     #tables names are automatically set as the class name with lower case
     answer_id = db.Column(db.Integer, primary_key=True)
@@ -52,5 +53,3 @@ class Answer(db.Model):
     #user.user_id -> referencing the table name and column name. NOT CLASS
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id', ondelete='CASCADE'), nullable=False)
     question_id = db.Column(db.Integer, db.ForeignKey('question.question_id', ondelete='CASCADE'), nullable=False)
-
-

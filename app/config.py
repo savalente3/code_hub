@@ -40,4 +40,8 @@ class Config():
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     MAIL_DEFAULT_SENDER = os.environ.get('MAIL_DEFAULT_SENDER')
 
+    #admin user config
+    SEED_ADMIN_EMAIL = os.environ.get('SEED_ADMIN_EMAIL')
+    SEED_ADMIN_PASSWORD = os.environ.get('SEED_ADMIN_PASSWORD')
+
  

@@ -24,6 +24,9 @@
             <div class="col- info">
                 <ul id='title' class="meta list list-unstyled">
                     <h2 class="title"><span class="pro-label label label-warning">Profile</span></h2>
+                    {% if current_user.admin == True%}
+                        <p>You are an <b>Admin</b></p>
+                    {% endif %}
                     <li>{{ current_user.name }}</li>
                     <li>{{ current_user.username }}</li>
                     <li>{{ current_user.email }}</li>

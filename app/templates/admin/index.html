@@ -1,6 +1,23 @@
 {% extends 'admin/base.html' %}
 
 {% block body %}
-  <p>Hello world</p>
 
+    <div class="container">
+        <div class="row">
+            <div class="col-lg card bg-light">
+                <h1>News Board</h1>
+            </div>
+            <div class="col-md card bg-light">
+                <h1>Add Admin</h1>
+                <p>To add an admin user, the user must already be registered as a regular user</p>
+                <p>Confirm the admin column in <a href="/admin/user">User</a> </p>
+                <p>Moderate questions in <a href="/admin/question">Question</a> </p>
+                <p>Moderate answers in <a href="/admin/answer">Answer</a> </p>
+                <br>
+                <p><a class="btn btn-primary" href="/">Go Back to CodeHub</a></p>
+                <br>
+            </div>
+        </div>
+    </div>
+    
 {% endblock %}

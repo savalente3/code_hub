@@ -48,6 +48,9 @@
                                 <a class="menu_header nav-link">{{current_user.username}}'s Account</a>
                                 <a class="menu_email nav-link">{{current_user.email}}</a>
                                 <div class="dropdown-divider divider"></div>
+                                {% if current_user.admin == True%}
+                                    <a class="dropdown-item" href="/admin">Admin Panel</a>
+                                {% endif %}
                                 <a class="dropdown-item" href="/{{ current_user.username }}/account">Account</a>
                                 <a class="dropdown-item" href="/{{ current_user.username }}/questions">Your Questions</a>
                                 <a class="dropdown-item" href="/{{ current_user.username }}/answers">Your Answers</a>
