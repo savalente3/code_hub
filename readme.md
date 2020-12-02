@@ -3,11 +3,13 @@
 CodeHub is a question answer web application.
 
 ## Requirements
+```Run
 pip install -r requirements.txt
-enviroment variables need to be defined in the terminal before app is run
-copy and past the abose commands. Change the values in ' '
+```
 
 ## Setting Enviroment Variables
+enviroment variables need to be defined in the terminal before app is run
+copy and past the abose commands. Change the values in ' '
 
 ```python
 "----------------ENV VARS----------------"
