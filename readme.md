@@ -10,7 +10,7 @@ copy and past the abose commands. Change the values in ' '
 ## Setting Enviroment Variables
 
 ```python
-----------------ENV VARS----------------
+"----------------ENV VARS----------------"
 export SECRET_KEY='the_secret_key'
 export SECURITY_PASSWORD_SALT='the_password_salt'
 
