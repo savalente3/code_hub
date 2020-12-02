@@ -22,8 +22,8 @@ export SEED_ADMIN_EMAIL='full_email'
 export SEED_ADMIN_PASSWORD='full_email' 
 ```
 
-
-```Run
+## Run
 navigate to project directory 
+```Run
 python run.py
 ```
