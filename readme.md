@@ -4,7 +4,7 @@ CodeHub is a question answer web application.
 
 ## Requirements
 ```Run
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 ## Setting Enviroment Variables
@@ -13,6 +13,9 @@ copy and past the abose commands. Change the values in ' '
 
 ```python
 "----------------ENV VARS----------------"
+*each command has to be inserted separatly*
+*admin account only created when home is accessed for the first time*
+
 export SECRET_KEY='the_secret_key'
 export SECURITY_PASSWORD_SALT='the_password_salt'
 
@@ -27,5 +30,5 @@ export SEED_ADMIN_PASSWORD='admin_password'
 ## Run
 navigate to project directory 
 ```Run
-python run.py
+python3 run.py
 ```
