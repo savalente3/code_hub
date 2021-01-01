@@ -60,6 +60,7 @@ body {
 
 .register {
   position: absolute;
+  margin-top: 3.5% !important;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -91,7 +92,7 @@ footer, .feedArea, .reset_btn{
 .register_box_size>btn, 
 .reg_btn{
   align-content: center;
-  width: 290px;
+  width: 300px;
 }
 
 .dropdown-divider, .divider{
@@ -173,7 +174,14 @@ footer, .feedArea, .reset_btn{
 
 .input-group{
   width: 300px !important;
-  padding-left: 3%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 12px;
+  margin-top: 0px;
+}
+
+.card-body {
+  padding-top: 0% !important;
 }
 
 #login_form {

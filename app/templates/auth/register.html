@@ -21,7 +21,7 @@
     <div class="container register">
         <div class="card bg-light">
         <article class="card-body mx-auto" style="max-width: 400px;">
-            <h4 class="card-title mt-3 text-center">Create Account</h4> <br>
+            <h4 class="mt-3 text-center">Create Account</h4> <br>
 
             <form class="register_box_size" method="POST" action="">
                 <!-- The form.hidden_tag() template argument generates a hidden field that 
@@ -112,6 +112,7 @@
                         {{ form.confirm_password(class="form-control", placeholder="Confirm password") }}
                     {% endif %} 
                 </div> 
+                <p class="text-center">By clicking Create Account, you agree to our Terms. This website is GDPR compliance.</p>
 
                 <div class="form-group input-group">
                     {{ form.submit(class="btn reg_btn btn-primary") }}
