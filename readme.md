@@ -1,6 +1,7 @@
 # CodeHub
 
 CodeHub is a question answer web application.
+The exponential growth and dependency of web applications is leading to more personal information being stored and used by these systems. Therefore, security is now essential when designing websites, apps and software. In this project a simple and secure message board web application was developed that allows users to ask and answer questions related to programming. There are a lot of factors that can compromise the security of a website; thus, protection measures and protocols must be implemented to protect them from being accessed by unauthorized people and later causing data breaches in the system.
 
 ## Requirements
 ```Run
